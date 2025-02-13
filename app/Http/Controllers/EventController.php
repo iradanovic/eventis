@@ -15,7 +15,8 @@ class EventController extends Controller
 
     public function show($id)
     {
-        return Event::with(['location', 'eventType', 'organizer'])->findOrFail($id);
+        $event = Event::with(['location', 'eventType', 'organizer'])->findOrFail($id);
+        return view('events.show', compact('event'));
     }
 
     public function create()
@@ -38,8 +39,12 @@ class EventController extends Controller
             'location_id' => 'required|exists:locations,id',
             'event_type_id' => 'required|exists:event_types,id',
             'organizer_id' => 'required|exists:users,id',
-            'picture' => 'nullable|string',
+            'picture' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
+
+        if ($request->hasFile('picture')) {
+            $validated['picture'] = $request->file('picture')->store('events', 'public');
+        }
 
         Event::create($validated);
 

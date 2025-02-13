@@ -3,14 +3,24 @@
 @section('content')
 
     <h1>Users</h1>
-    <table border="1">
-        <thead>
+
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    <a href="{{ route('users.create') }}" class="btn btn-primary mb-3">Create New User</a>
+
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
             <tr>
                 <th>ID</th>
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Email</th>
                 <th>Role</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -32,10 +42,5 @@
             @endforeach
         </tbody>
     </table>
-    @if(session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
-    @endif
 
 @endsection

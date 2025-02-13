@@ -2,8 +2,17 @@
 
 @section('content')
     <h1>Events</h1>
-    <table border="1">
-        <thead>
+
+    <a href="{{ route('events.create') }}" class="btn btn-primary mb-3">Create New Event</a>
+
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
             <tr>
                 <th>ID</th>
                 <th>Name</th>
@@ -20,10 +29,12 @@
             @foreach($events as $event)
                 <tr>
                     <td>{{ $event->id }}</td>
-                    <td>{{ $event->event_name }}</td>
+                    <td>
+                        <a href="{{ route('events.show', $event->id) }}">{{ $event->event_name }}</a>
+                    </td>
                     <td>{{ $event->description }}</td>
-                    <td>{{ $event->start_time }}</td>
-                    <td>{{ $event->end_time }}</td>
+                    <td>{{ \Carbon\Carbon::parse($event->start_time)->format('d.m.Y H:i') }}</td>
+                    <td>{{ \Carbon\Carbon::parse($event->end_time)->format('d.m.Y H:i') }}</td>
                     <td>{{ $event->location->location_name ?? 'N/A' }}</td>
                     <td>{{ $event->eventType->event_type_name ?? 'N/A' }}</td>
                     <td>{{ $event->organizer->first_name ?? 'N/A' }}</td>
@@ -38,9 +49,4 @@
             @endforeach
         </tbody>
     </table>
-    @if(session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
-    @endif
-    @endsection
+@endsection
