@@ -3,7 +3,7 @@
 @section('content')
 
     <h1>Create Event</h1>
-    <form action="{{ route('events.store') }}" method="POST">
+    <form action="{{ route('events.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
         <div class="form-group">
@@ -76,6 +76,14 @@
                 @endforeach
             </select>
             @error('organizer_id')
+                <div class="text-danger">{{ $message }}</div>
+            @enderror
+        </div>
+
+        <div class="form-group">
+            <label for="picture">Event Picture</label>
+            <input type="file" name="picture" class="form-control">
+            @error('picture')
                 <div class="text-danger">{{ $message }}</div>
             @enderror
         </div>

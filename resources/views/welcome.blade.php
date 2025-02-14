@@ -12,9 +12,9 @@
                 <div class="col-md-4 mb-4">
                     <div class="card">
                         @if($event->picture)
-                        <img src="{{ $event->picture }}" class="card-img-top" alt="{{ $event->event_name }}">
+                            <img src="{{ asset('storage/' . $event->picture) }}" alt="Event Image" class="img-fluid" style="max-width: 300px;">
                         @else
-                            <img src="https://placehold.co/300x150" class="card-img-top" alt="No Image">
+                            <img src="https://placehold.co/300x150?text=No+Image" class="img-fluid">
                         @endif
                         <div class="card-body">
                             <h5 class="card-title">{{ $event->event_name }}</h5>

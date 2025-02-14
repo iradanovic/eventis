@@ -15,7 +15,13 @@ class LocationController extends Controller
 
     public function show($id)
     {
-        return Location::findOrFail($id);
+        $location = Location::findOrFail($id);
+        return view('locations.show', compact('location'));
+    }
+
+    public function create()
+    {
+        return view('locations.create');
     }
 
     public function store(Request $request)
@@ -23,10 +29,18 @@ class LocationController extends Controller
         $validated = $request->validate([
             'location_name' => 'required|string|max:100',
             'address' => 'nullable|string|max:150',
-            'city' => 'nullable|string|max:50',            
+            'city' => 'nullable|string|max:50',
         ]);
 
-        return Location::create($validated);
+        Location::create($validated);
+
+        return redirect()->route('locations.index')->with('success', 'Location created successfully.');
+    }
+
+    public function edit($id)
+    {
+        $location = Location::findOrFail($id);
+        return view('locations.edit', compact('location'));
     }
 
     public function update(Request $request, $id)
@@ -34,19 +48,21 @@ class LocationController extends Controller
         $location = Location::findOrFail($id);
 
         $validated = $request->validate([
-            'location_name' => 'string|max:100',
-            'address' => 'string|max:150|nullable',
-            'city' => 'string|max:50|nullable',
+            'location_name' => 'required|string|max:100',
+            'address' => 'nullable|string|max:150',
+            'city' => 'nullable|string|max:50',
         ]);
 
         $location->update($validated);
-        return $location;
+
+        return redirect()->route('locations.index')->with('success', 'Location updated successfully.');
     }
 
     public function destroy($id)
     {
         $location = Location::findOrFail($id);
         $location->delete();
-        return response(null, 204);
+
+        return redirect()->route('locations.index')->with('success', 'Location deleted successfully.');
     }
 }
